@@ -1,0 +1,786 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Peds Lock-In: Milestones, Microbes &amp; Shots</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,800&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#efe6d4; --paper:#fbf7ee; --paper2:#f4ecdc; --line:#d6c7a6; --ink:#23221f; --ink2:#3d3a33; --mute:#7a7262;
+  --navy:#1d2a36; --teal:#1c4a5c; --tealL:#2b6378; --tealBg:#e3ecee;
+  --gold:#b58b2b; --goldL:#dcc082; --goldBg:#f6ecd2; --caramel:#8b5a2b; --caramelBg:#f3e6d6;
+  --ok:#3d6b45; --okBg:#e6f0e3; --bad:#9a3324; --badBg:#f8e9e4;
+  --wood1:#e9d3a6; --wood2:#d9b97c;
+  color-scheme:light;
+  box-sizing:border-box; padding-top:env(safe-area-inset-top,0px); padding-bottom:env(safe-area-inset-bottom,0px);
+}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--bg);color:var(--ink);font-family:'Inter',system-ui,-apple-system,'Segoe UI',sans-serif;font-size:16px;line-height:1.5;min-height:100vh}
+button{font-family:inherit;color:inherit;cursor:pointer}
+button:focus-visible,[tabindex]:focus-visible{outline:3px solid var(--gold);outline-offset:2px}
+h1,h2,h3{font-family:'Fraunces',Georgia,'Times New Roman',serif;line-height:1.15}
+.wrap{max-width:980px;margin:0 auto;padding:1.2rem 1rem 3rem}
+
+/* ---------- top bar ---------- */
+.topbar{position:sticky;top:0;z-index:20;background:var(--navy);color:#fff;border-bottom:3px solid var(--gold)}
+.topbar-in{max-width:980px;margin:0 auto;padding:.6rem 1rem;display:flex;align-items:center;gap:.8rem;flex-wrap:wrap}
+.brand{font-family:'Fraunces',Georgia,serif;font-weight:800;font-size:1.15rem;letter-spacing:.2px;display:flex;align-items:center;gap:.45rem;background:none;border:none;color:#fff}
+.brand small{font-family:'Inter',sans-serif;font-weight:600;font-size:.72rem;color:var(--goldL);margin-left:.2rem}
+.stats{margin-left:auto;display:flex;gap:.5rem;align-items:center;flex-wrap:wrap}
+.pill{background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.18);border-radius:999px;padding:.22rem .7rem;font-size:.8rem;font-weight:600;white-space:nowrap}
+.pill b{color:var(--goldL)}
+.lvlbar{width:110px;height:8px;background:rgba(255,255,255,.15);border-radius:6px;overflow:hidden}
+.lvlbar i{display:block;height:100%;background:var(--gold);width:0;transition:width .4s}
+
+/* ---------- home ---------- */
+.hero{display:grid;grid-template-columns:1.4fr 1fr;gap:1.2rem;align-items:end;margin:1.2rem 0 1.4rem}
+.hero h1{font-size:clamp(2rem,5vw,3.1rem);font-weight:800;color:var(--navy)}
+.hero p{color:var(--ink2);margin-top:.6rem;max-width:58ch}
+.countdown{background:var(--paper);border:1.5px solid var(--line);border-radius:14px;padding:1rem 1.1rem}
+.countdown .big{font-family:'Fraunces',Georgia,serif;font-weight:800;font-size:2.4rem;color:var(--teal);line-height:1}
+.countdown .lbl{font-size:.85rem;color:var(--mute);margin-top:.2rem}
+.countdown .row{display:flex;justify-content:space-between;margin-top:.7rem;font-size:.84rem;color:var(--ink2)}
+.section-h{display:flex;align-items:baseline;gap:.7rem;margin:1.5rem 0 .7rem}
+.section-h h2{font-size:1.35rem;color:var(--navy)}
+.section-h span{font-size:.86rem;color:var(--mute)}
+.games{display:grid;grid-template-columns:repeat(3,1fr);gap:.8rem}
+.game{background:var(--paper);border:1.5px solid var(--line);border-radius:14px;padding:1rem;text-align:left;display:flex;flex-direction:column;gap:.35rem;min-height:150px;transition:transform .12s,border-color .12s}
+.game:hover{transform:translateY(-2px);border-color:var(--gold)}
+.game .ico{font-size:1.7rem}
+.game h3{font-size:1.12rem;color:var(--navy)}
+.game p{font-size:.86rem;color:var(--ink2);flex:1}
+.game .best{font-size:.76rem;color:var(--caramel);font-weight:700}
+.game.m3{border-left:5px solid var(--teal)} .game.m2{border-left:5px solid var(--gold)} .game.mix{border-left:5px solid var(--caramel)}
+.review-tile{display:flex;align-items:center;gap:1rem;background:var(--goldBg);border:1.5px solid var(--goldL);border-radius:14px;padding:1rem 1.1rem;margin-top:.8rem;width:100%;text-align:left}
+.review-tile .n{font-family:'Fraunces',Georgia,serif;font-size:2rem;font-weight:800;color:var(--caramel);min-width:2.2ch;text-align:center}
+.review-tile h3{font-size:1.05rem;color:var(--navy)}
+.review-tile p{font-size:.86rem;color:var(--ink2)}
+.foot-note{font-size:.8rem;color:var(--mute);margin-top:1.4rem}
+.linkbtn{background:none;border:none;text-decoration:underline;color:var(--teal);font-size:.8rem}
+
+/* ---------- game shell ---------- */
+.gtop{display:flex;align-items:center;gap:.6rem;margin:1rem 0 .9rem;flex-wrap:wrap}
+.back{background:var(--paper);border:1.5px solid var(--line);border-radius:10px;padding:.4rem .8rem;font-weight:600;font-size:.86rem}
+.gtitle{font-family:'Fraunces',Georgia,serif;font-size:1.4rem;font-weight:800;color:var(--navy)}
+.hud{margin-left:auto;display:flex;gap:.45rem;flex-wrap:wrap}
+.hud .pill{background:var(--paper);border-color:var(--line);color:var(--ink2)}
+.hud .pill b{color:var(--teal)}
+.progress{height:6px;background:var(--paper2);border-radius:6px;overflow:hidden;margin-bottom:1rem}
+.progress i{display:block;height:100%;background:var(--teal);width:0;transition:width .3s}
+.card{background:var(--paper);border:1.5px solid var(--line);border-radius:16px;padding:1.2rem 1.2rem 1.3rem}
+.prompt{font-size:1.2rem;font-weight:700;color:var(--navy);line-height:1.4}
+.sub{font-size:.88rem;color:var(--mute);margin-top:.3rem}
+.opts{display:grid;grid-template-columns:repeat(2,1fr);gap:.55rem;margin-top:1rem}
+.opt{background:#fff;border:1.5px solid var(--line);border-radius:12px;padding:.75rem .9rem;text-align:left;font-size:.95rem;font-weight:600;color:var(--ink);transition:background .12s,border-color .12s}
+.opt:hover:not([disabled]){border-color:var(--teal);background:var(--tealBg)}
+.opt.right{background:var(--okBg);border-color:var(--ok);color:var(--ok)}
+.opt.wrong{background:var(--badBg);border-color:var(--bad);color:var(--bad)}
+.opt[disabled]{cursor:default}
+.fb{margin-top:1rem;border-radius:12px;padding:.85rem 1rem;font-size:.93rem;line-height:1.55;display:none}
+.fb.show{display:block}
+.fb.good{background:var(--okBg);border:1.5px solid #a9c9a8}
+.fb.bad{background:var(--badBg);border:1.5px solid #e0aa9a}
+.fb strong{display:block;margin-bottom:.2rem}
+.next{margin-top:1rem;background:var(--teal);color:#fff;border:none;border-radius:12px;padding:.75rem 1.4rem;font-weight:700;font-size:.95rem;display:none}
+.next.show{display:inline-block}
+.next:hover{background:var(--tealL)}
+.combo{font-weight:800;color:var(--gold)}
+.shake{animation:shake .35s}
+@keyframes shake{0%,100%{transform:translateX(0)}25%{transform:translateX(-6px)}75%{transform:translateX(6px)}}
+.pop{animation:pop .35s}
+@keyframes pop{0%{transform:scale(1)}50%{transform:scale(1.05)}100%{transform:scale(1)}}
+
+/* ---------- growth ruler (signature element) ---------- */
+.milestone-card{display:flex;gap:.9rem;align-items:center;background:#fff;border:2px dashed var(--goldL);border-radius:14px;padding:1rem 1.1rem;margin-bottom:1.1rem}
+.milestone-card .em{font-size:2rem}
+.milestone-card .t{font-size:1.15rem;font-weight:700;color:var(--navy)}
+.milestone-card .d{font-size:.84rem;color:var(--mute)}
+.timer{height:5px;background:var(--paper2);border-radius:4px;overflow:hidden;margin-bottom:1rem}
+.timer i{display:block;height:100%;background:var(--gold);width:100%}
+.ruler-wrap{overflow-x:auto;padding-bottom:.4rem}
+.ruler{position:relative;min-width:760px;background:linear-gradient(180deg,var(--wood1),var(--wood2));border:2px solid #b8955a;border-radius:10px;padding:2.1rem .6rem .6rem;box-shadow:inset 0 -3px 0 rgba(0,0,0,.08)}
+.ruler::before{content:"";position:absolute;left:.6rem;right:.6rem;top:.45rem;height:1.2rem;background:
+  repeating-linear-gradient(90deg,rgba(60,40,10,.55) 0 1px,transparent 1px 12px),
+  repeating-linear-gradient(90deg,rgba(60,40,10,.8) 0 2px,transparent 2px 60px);
+  background-size:auto 55%,auto 100%;background-repeat:repeat-x;background-position:0 0,0 0}
+.ruler-slots{display:grid;grid-template-columns:repeat(13,1fr);gap:.3rem;position:relative}
+.slot{background:var(--paper);border:1.5px solid #b8955a;border-radius:8px;padding:.55rem .1rem;font-weight:800;font-size:.86rem;color:var(--navy);text-align:center;transition:transform .12s}
+.slot small{display:block;font-weight:600;font-size:.66rem;color:var(--mute)}
+.slot:hover:not([disabled]){background:var(--goldBg);transform:translateY(-2px)}
+.slot.right{background:var(--ok);color:#fff;border-color:var(--ok)} .slot.right small{color:#e6f0e3}
+.slot.wrong{background:var(--bad);color:#fff;border-color:var(--bad)} .slot.wrong small{color:#f8e9e4}
+.slot.hint{background:var(--ok);border-color:var(--ok);color:#fff}.slot.hint small{color:#e6f0e3}.slot.hint::after,.slot.right::after{content:'✓';display:block;font-size:.8rem;line-height:1}
+.slot .placed{display:block;font-size:.62rem;font-weight:600;color:var(--caramel);margin-top:.15rem;line-height:1.2}
+.ruler-legend{display:grid;grid-template-columns:repeat(13,1fr);gap:.3rem;min-width:760px;padding:0 .6rem;margin-top:.35rem;font-size:.75rem;font-weight:600;color:var(--mute);text-align:center}.ruler-legend span{border-top:2px solid var(--line);padding-top:.2rem}
+
+/* ---------- detective ---------- */
+.clues{list-style:none;display:flex;flex-direction:column;gap:.45rem;margin-top:.8rem}
+.clue{background:#fff;border:1.5px solid var(--line);border-left:5px solid var(--gold);border-radius:10px;padding:.6rem .8rem;font-size:.95rem}
+.clue.hidden{color:var(--mute);border-left-color:var(--line);background:var(--paper2);font-style:italic}
+.clue-btn{margin-top:.6rem;background:var(--paper2);border:1.5px solid var(--line);border-radius:10px;padding:.5rem .9rem;font-weight:600;font-size:.86rem}
+.worth{font-size:.86rem;color:var(--caramel);font-weight:700;margin-top:.6rem}
+
+/* ---------- memory ---------- */
+.mem-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:.55rem;margin-top:1rem}
+.mcard{aspect-ratio:1.25/1;border-radius:12px;border:1.5px solid var(--line);background:var(--teal);color:#fff;font-weight:700;font-size:.86rem;padding:.4rem;display:flex;align-items:center;justify-content:center;text-align:center;line-height:1.25}
+.mcard .back-face{font-family:'Fraunces',Georgia,serif;font-size:1.4rem;color:var(--goldL)}
+.mcard.up{background:#fff;color:var(--navy);border:2px solid var(--gold);box-shadow:0 0 0 3px var(--goldBg)}
+.mcard.done{background:var(--okBg);color:var(--ok);border-color:var(--ok);cursor:default}
+.mcard.miss{background:#fff;color:var(--navy);border-color:var(--bad);border-width:2px}
+.ask{margin-top:1rem;min-height:3.2rem;border-radius:12px;padding:.8rem 1rem;background:var(--paper2);border:1.5px dashed var(--line)}
+.ask.on{background:#fff;border:1.5px solid var(--gold)}
+.ask.ask-ok{background:var(--okBg);border-color:var(--ok)}
+.ask.ask-bad{background:var(--badBg);border-color:var(--bad)}
+.ask-hint{color:var(--mute);font-size:.9rem}
+.ask-q{font-weight:800;color:var(--navy);font-size:1.02rem}
+.ask-ok .ask-q{color:var(--ok)}.ask-bad .ask-q{color:var(--bad)}
+.ask-pair{display:flex;flex-wrap:wrap;gap:.5rem;align-items:center;margin-top:.5rem;font-weight:600}
+.ask-pair span:not(.ask-amp){background:var(--goldBg);border:1.5px solid var(--goldL);border-radius:8px;padding:.3rem .6rem}
+.ask-amp{color:var(--mute);font-weight:800}
+.ask-btns{display:flex;flex-wrap:wrap;gap:.5rem;margin-top:.2rem}
+.ask-btns .primary,.ask-btns .secondary{margin-top:.6rem}
+.deck-pick{display:flex;flex-wrap:wrap;gap:.45rem;margin-top:.8rem}
+.deck-btn{background:#fff;border:1.5px solid var(--line);border-radius:999px;padding:.4rem .85rem;font-size:.84rem;font-weight:600}
+.deck-btn.on{background:var(--navy);color:#fff;border-color:var(--navy)}
+
+/* ---------- isolation sort ---------- */
+.bug{font-family:'Fraunces',Georgia,serif;font-size:clamp(1.6rem,5vw,2.4rem);font-weight:800;color:var(--navy);text-align:center;margin:.8rem 0 .2rem}
+.bins{display:grid;grid-template-columns:repeat(3,1fr);gap:.6rem;margin-top:1rem}
+.bin{border-radius:14px;padding:1rem .5rem;font-weight:800;font-size:1rem;border:2px solid;background:#fff;text-align:center}
+.bin small{display:block;font-weight:600;font-size:.74rem;margin-top:.2rem;color:var(--mute)}
+.bin.air{border-color:#1c4a5c;color:#1c4a5c} .bin.drop{border-color:#b58b2b;color:#8a6418} .bin.con{border-color:#8b5a2b;color:#8b5a2b}
+.bin:hover:not([disabled]){background:var(--paper2)}
+.bin.right{background:var(--okBg)} .bin.wrong{background:var(--badBg)}
+.hearts{font-size:1.05rem;letter-spacing:2px}
+
+/* ---------- shot clock ---------- */
+.visit{display:flex;align-items:center;gap:.8rem;flex-wrap:wrap}
+.visit .age{font-family:'Fraunces',Georgia,serif;font-size:2rem;font-weight:800;color:var(--teal)}
+.chips{display:flex;flex-wrap:wrap;gap:.45rem;margin-top:1rem}
+.chip{background:#fff;border:1.5px solid var(--line);border-radius:999px;padding:.5rem .9rem;font-weight:700;font-size:.9rem;color:var(--ink2)}
+.chip.sel{background:var(--teal);border-color:var(--teal);color:#fff}
+.chip.c-ok{background:var(--okBg);border-color:var(--ok);color:var(--ok)}
+.chip.c-miss{background:#fff;border:2px dashed var(--ok);color:var(--ok)}
+.chip.c-bad{background:var(--badBg);border-color:var(--bad);color:var(--bad)}
+.chip.c-opt{background:var(--goldBg);border-color:var(--goldL);color:#5c4512}
+.legend{display:flex;flex-wrap:wrap;gap:.8rem;font-size:.78rem;color:var(--mute);margin-top:.7rem}
+.legend span::before{content:"";display:inline-block;width:.8rem;height:.8rem;border-radius:3px;margin-right:.3rem;vertical-align:-1px;border:1.5px solid}
+.legend .l1::before{background:var(--okBg);border-color:var(--ok)} .legend .l2::before{border:2px dashed var(--ok)} .legend .l3::before{background:var(--badBg);border-color:var(--bad)} .legend .l4::before{background:var(--goldBg);border-color:var(--goldL)}
+.primary{background:var(--teal);color:#fff;border:none;border-radius:12px;padding:.7rem 1.3rem;font-weight:700;margin-top:1rem}
+.primary:hover{background:var(--tealL)}
+.primary[disabled]{opacity:.45;cursor:default}
+
+/* ---------- lightning ---------- */
+.clock{font-family:'Fraunces',Georgia,serif;font-size:2.4rem;font-weight:800;color:var(--teal);text-align:center}
+.clock.low{color:var(--bad)}
+.vit-list{display:flex;flex-direction:column;gap:.55rem;margin-top:1rem}
+.vit-row{display:grid;grid-template-columns:1.2fr 1fr auto;gap:.6rem;align-items:center;background:#fff;border:1.5px solid var(--line);border-radius:12px;padding:.65rem .8rem}
+.vit-k{font-weight:700;color:var(--navy)}
+.vit-v{font-family:'Fraunces',Georgia,serif;font-size:1.35rem;font-weight:800;color:var(--teal)}
+.vit-btns{display:flex;gap:.35rem}
+.vbtn{background:var(--paper);border:1.5px solid var(--line);border-radius:999px;padding:.4rem .8rem;font-weight:700;font-size:.85rem}
+.vbtn.on{background:var(--navy);color:#fff;border-color:var(--navy)}
+.vit-why{grid-column:1/-1;font-size:.86rem;color:var(--ink2)}
+.vit-why:empty{display:none}
+.vit-row.v-ok{border-color:var(--ok);background:var(--okBg)}
+.vit-row.v-bad{border-color:var(--bad);background:var(--badBg)}
+@media (max-width:520px){.vit-row{grid-template-columns:1fr 1fr}.vit-btns{grid-column:1/-1}}
+.tf{display:grid;grid-template-columns:1fr 1fr;gap:.6rem;margin-top:1rem}
+
+/* ---------- results ---------- */
+.results h2{font-size:1.7rem;color:var(--navy)}
+.score-line{font-family:'Fraunces',Georgia,serif;font-size:3rem;font-weight:800;color:var(--teal);line-height:1;margin:.5rem 0}
+.missed-list{margin-top:1rem;display:flex;flex-direction:column;gap:.5rem}
+.missed-item{background:#fff;border:1.5px solid var(--line);border-left:5px solid var(--bad);border-radius:10px;padding:.6rem .8rem;font-size:.9rem}
+.missed-item b{color:var(--navy)}
+.res-actions{display:flex;flex-wrap:wrap;gap:.6rem;margin-top:1.2rem}
+.secondary{background:var(--paper);border:1.5px solid var(--line);border-radius:12px;padding:.7rem 1.2rem;font-weight:700}
+
+.toast{visibility:hidden;position:fixed;left:50%;top:calc(4.4rem + env(safe-area-inset-top,0px));transform:translateX(-50%) translateY(-30%);opacity:0;background:var(--navy);color:#fff;border:2px solid var(--gold);border-radius:12px;padding:.6rem 1rem;font-weight:700;font-size:.9rem;z-index:50;transition:transform .3s,opacity .3s;max-width:90vw;text-align:center}
+.toast.show{visibility:visible;opacity:1;transform:translateX(-50%) translateY(0)}
+.hide{display:none!important}
+
+@media (max-width:760px){
+  .hero{grid-template-columns:1fr}
+  .games{grid-template-columns:1fr 1fr}
+  .opts{grid-template-columns:1fr}
+  .mem-grid{grid-template-columns:repeat(3,1fr)}
+  .lvlbar{display:none}
+  .ruler{min-width:0;padding-top:.6rem}.ruler::before{display:none}
+  .ruler-slots{grid-template-columns:repeat(7,1fr)}
+  .ruler-legend{display:none}
+}
+@media (max-width:460px){
+  .games{grid-template-columns:1fr}
+  .bins{grid-template-columns:1fr}
+  .topbar-in{gap:.4rem}
+}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+</style>
+</head>
+<body>
+<header class="topbar"><div class="topbar-in">
+  <button class="brand" id="homeBtn" aria-label="Back to game menu">🧸 Peds Lock-In <small>NRSG 4504 · Exam 1</small></button>
+  <div class="stats">
+    <span class="pill" id="lvlName">Newborn</span>
+    <span class="lvlbar" aria-hidden="true"><i id="lvlFill"></i></span>
+    <span class="pill"><b id="xpTxt">0</b> XP</span>
+    <span class="pill">🔥 best streak <b id="bestStreak">0</b></span>
+  </div>
+</div></header>
+
+<main class="wrap" id="app"></main>
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+<script>
+/* =====================================================================
+   DATA — every fact comes from the Module 2 and Module 3 study-sheet tabs
+   ===================================================================== */
+var AGES=[{v:2,l:'2',u:'mo'},{v:4,l:'4',u:'mo'},{v:6,l:'6',u:'mo'},{v:9,l:'9',u:'mo'},{v:12,l:'12',u:'mo'},{v:15,l:'15',u:'mo'},{v:18,l:'18',u:'mo'},{v:24,l:'24',u:'mo'},{v:30,l:'30',u:'mo'},{v:36,l:'3',u:'yr'},{v:48,l:'4',u:'yr'},{v:60,l:'5',u:'yr'},{v:72,l:'6',u:'yr'}];
+function ageLabel(v){var a=AGES.filter(function(x){return x.v===v;})[0];return a?a.l+' '+a.u:v+' mo';}
+var MILESTONES=[
+ {id:'ms1',em:'😊',t:'Social smile',a:[2],why:'Social smile by 2 months is the first social milestone; no smile by ~2 months is a red flag.'},
+ {id:'ms2',em:'💪',t:'Lifts head when lying on tummy',a:[2],why:'At 1–2 months, infants turn the head when supine and lift it on their tummy.'},
+ {id:'ms3',em:'🎯',t:'Holds head steady, no head lag',a:[4],why:'Head steady without support by 4 months. Head lag after ~4–5 months is a concern.'},
+ {id:'ms4',em:'🙌',t:'Moro (startle) reflex disappears',a:[4],why:'Moro is usually gone by ~4 months. A persistent Moro reflex is unexpected.'},
+ {id:'ms5',em:'✊',t:'Crude palmar grasp, brings hands to mouth',a:[4],why:'4 months = whole-hand (crude palmar) grasp, hands to mouth, swings at toys.'},
+ {id:'ms6',em:'🔄',t:'Rolls tummy-to-back; sits leaning on hands',a:[6],why:'6 months: rolls (tummy-to-back and back-to-front) and "tripod" sits leaning on hands.'},
+ {id:'ms7',em:'🗣️',t:'Babbles ("ba-ba," "ma-ma")',a:[6],why:'Coos → babbles by 6 months → first words ~12 months. No babbling by 6 months is a red flag.'},
+ {id:'ms8',em:'🧸',t:'Picks up a dropped toy',a:[6],why:'Around 6 months infants reach intentionally and can pick up a dropped toy.'},
+ {id:'ms9',em:'😢',t:'Separation anxiety begins',a:[6,9],why:'Separation anxiety starts around 6–8 months, as object permanence develops (4–8 months).'},
+ {id:'ms10',em:'🪑',t:'Sits without support; crawls',a:[9],why:'9 months: sits alone, gets into sitting by self, crawls or creeps.'},
+ {id:'ms11',em:'🙈',t:'Stranger anxiety',a:[9],why:'Stranger anxiety peaks around 9 months and shows healthy attachment (trust vs. mistrust).'},
+ {id:'ms12',em:'🤲',t:'Transfers objects hand to hand',a:[9],why:'8–9 months: scissors grasp, transfers objects hand to hand, rakes food.'},
+ {id:'ms13',em:'🤏',t:'Pincer grasp (thumb + index finger)',a:[9,12],why:'Pincer grasp develops at 9–12 months, which makes small objects a choking hazard.'},
+ {id:'ms14',em:'🧍',t:'Pulls to stand and cruises furniture',a:[12],why:'12 months: pulls to stand, cruises, may take first steps.'},
+ {id:'ms15',em:'👋',t:'First words ("mama," "dada"); waves bye-bye',a:[12],why:'First meaningful words come around 12 months.'},
+ {id:'ms16',em:'⚖️',t:'Triples birth weight',a:[12],why:'Birth weight doubles by 4–6 months and triples by 12 months; length increases 50% in year one.'},
+ {id:'ms17',em:'⚖️',t:'Doubles birth weight',a:[4,6],why:'Birth weight doubles by 4–6 months.'},
+ {id:'ms18',em:'🦶',t:'Babinski reflex disappears',a:[12],why:'Babinski (toes fan out) is usually gone by ~12 months, much later than other primitive reflexes.'},
+ {id:'ms19',em:'🦷',t:'First tooth erupts (lower central incisor)',a:[6,9],why:'Lower central incisors erupt first, at about 6–10 months.'},
+ {id:'ms20',em:'🧠',t:'Posterior fontanel closes',a:[2],why:'Posterior fontanel closes by 2 months; the anterior closes at 12–24 months.'},
+ {id:'ms21',em:'🧠',t:'Anterior fontanel closes',a:[12,15,18,24],why:'Anterior fontanel closes at 12–24 months.'},
+ {id:'ms22',em:'👣',t:'Takes steps alone; stacks 2 blocks',a:[15],why:'15 months: takes steps on own, stacks 2 blocks, claps, finger-feeds.'},
+ {id:'ms23',em:'🖍️',t:'Walks well, scribbles, drinks from an open cup',a:[18],why:'18 months: walks independently, scribbles, open cup (spills), 3+ words.'},
+ {id:'ms24',em:'📋',t:'First M-CHAT autism screen',a:[18],why:'Autism screening (M-CHAT-R/F) is done at 18 and 24 months.'},
+ {id:'ms25',em:'⚽',t:'Runs, kicks a ball, uses 2-word phrases',a:[24],why:'24 months: runs, kicks, walks up stairs, 2-word phrases ("want milk").'},
+ {id:'ms26',em:'🐸',t:'Jumps off the ground with both feet; ~50 words',a:[30],why:'30 months: jumps with both feet; about 50 words.'},
+ {id:'ms27',em:'🚲',t:'Rides a tricycle; 3-word sentences',a:[36],why:'3 years: tricycle, 3-word sentences, several hundred words.'},
+ {id:'ms28',em:'⭕',t:'Copies a circle',a:[36],why:'Shapes come in order: circle (3) → square (4) → triangle (5).'},
+ {id:'ms29',em:'🦘',t:'Hops on one foot; copies a square',a:[48],why:'4 years: hops on one foot, copies a square, draws a person with ~3 parts.'},
+ {id:'ms30',em:'🔺',t:'Copies a triangle; 2,000+ words',a:[60],why:'By 5: copies a triangle and uses 2,000+ words.'},
+ {id:'ms31',em:'🦷',t:'Primary teeth start falling out',a:[72],why:'Permanent teeth begin replacing primary teeth at about 6 years.'},
+ {id:'ms32',em:'🍯',t:'Honey becomes safe to eat',a:[12],why:'No honey before 12 months (infant botulism).'},
+ {id:'ms33',em:'🥛',t:'Switch from formula to whole cow\u2019s milk',a:[12],why:'Whole cow\u2019s milk starts at 12 months; then limit to 16–24 oz/day.'},
+ {id:'ms34',em:'🥣',t:'Start solid foods (iron-fortified cereal)',a:[6],why:'Solids start around 6 months, when the tongue-thrust reflex is gone and head control is good.'}
+];
+var GROUPS=['Infant','Toddler','Preschooler','School-age','Adolescent'];
+var GROUP_AGES={Infant:'1–12 mo',Toddler:'1–3 yr',Preschooler:'3–6 yr','School-age':'6–12 yr',Adolescent:'12–20 yr'};
+var CLUES={
+ Infant:['I need about 700–1,000 calories a day.','Even after solids start, breast milk or formula is still my main source of calories.','My iron stores from birth last about 6 months.','My normal respiratory rate is 25–60.','My Erikson stage is trust vs. mistrust.','I learn through my senses and movement (sensorimotor).','I\u2019m figuring out object permanence.','I play alone: peek-a-boo, mirrors, rattles.','I sleep alone, on my back, in an empty crib.','No honey for me yet.','I need vitamin D drops if I\u2019m breastfed.','New foods come one at a time, every 3–5 days.','My heart rate is normally 90–160.','My respiratory rate can be 25–60.','My head circumference is measured at every visit.','I ride rear-facing in my car seat.'],
+  Toddler:['I eat about 1,000–1,400 kcal a day in 4–6 small meals and snacks.','Picky eating and food jags are normal for me.','I sleep 11–14 hours a day, including naps.','My normal respiratory rate is 25–30.','I drink whole milk until age 2.','My Erikson stage is autonomy vs. shame and doubt.','"Me do it!" and "No!" are my favorite words.','Temper tantrums peak at my age.','I play beside other kids, but not with them (parallel play).','I have a very limited sense of time.','I may regress (bed-wetting, baby talk) when stressed.','My cow\u2019s milk should be limited to 16–24 oz a day.','I get screened for lead and iron deficiency.','About 80% of foreign-body aspirations happen at my age or younger.','I\u2019m screened for autism at 18 and 24 months.','I gain 4–6 lb and grow 3–5 inches a year.','Toilet training starts when I\u2019m ready, not at a set age.','My normal heart rate is 80–140.'],
+ Preschooler:['My normal heart rate is 70–120.','My normal respiratory rate is 20–25.','My Erikson stage is initiative vs. guilt.','I\u2019m egocentric and use magical thinking (preoperational).','I believe objects are alive (animism).','I may think being sick is a punishment.','I have imaginary friends.','I play with others and share materials (associative play).','I ask "why?" about everything.','I have lots of fears, especially of bodily injury.','I need 10–13 hours of sleep.','My screen time should be about 1 hour a day.','I get my "kindergarten shots" (DTaP, IPV, MMR, varicella).','Trampolines are discouraged for me.','My aggression peaks at 3 and should drop by 5.'],
+ 'School-age':['I’m obese if my BMI is at or above the 95th percentile.','My nutrition should be fruits, veggies, whole grains, lean protein, and low-fat dairy.','My Erikson stage is industry vs. inferiority.','I think logically about concrete things (concrete operational).','I can classify things and understand conservation.','I love organized games with rules, sports, and clubs.','My permanent teeth are coming in.','I need at least 60 minutes of activity a day.','I need 9–12 hours of sleep.','I ride in a booster until the seat belt fits (about 4\'9").','Stress may show up as stomachaches or headaches.','In the hospital, I worry about missing school and falling behind.','I\u2019m screened for bullying, learning disabilities, and ADHD.','My normal heart rate is 60–110.'],
+ Adolescent:['My calorie needs can be 1,800–3,300 a day.','My normal respiratory rate is 16–20.','My Erikson stage is identity vs. role confusion.','I can think abstractly and hypothetically (formal operational).','My peer group has the strongest influence on me.','I need 8–10 hours of sleep.','I get Tdap, HPV, and MenACWY at 11–12.','I should be interviewed alone, with confidentiality explained.','HEADSS screening is for me.','Hypertension for me is 130/80 or higher.','My normal heart rate is 50–100.','In the hospital, losing privacy and time with friends stresses me most.','Tanner stages describe my body changes.']
+};
+var DECKS=[
+ {name:'Erikson',mod:2,pairs:[['Trust vs. Mistrust','Infant (0–1 yr)'],['Autonomy vs. Shame & Doubt','Toddler (1–3 yr)'],['Initiative vs. Guilt','Preschooler (3–6 yr)'],['Industry vs. Inferiority','School-age (6–12 yr)'],['Identity vs. Role Confusion','Adolescent (12–20 yr)'],['Object permanence','Develops at 4–8 months']]},
+ {name:'Piaget & play',mod:2,pairs:[['Sensorimotor','Learns through senses & movement'],['Preoperational','Egocentric, magical thinking'],['Concrete operational','Logic, classification, conservation'],['Formal operational','Abstract, hypothetical thinking'],['Parallel play','Beside, not with, others'],['Associative play','Shares materials, no shared goal']]},
+ {name:'Reflexes & fontanels',mod:2,pairs:[['Moro reflex','Gone by ~4 months'],['Babinski reflex','Gone by ~12 months'],['Tonic neck ("fencer")','Gone by ~4–6 months'],['Rooting reflex','Turns toward a cheek stroke'],['Posterior fontanel','Closes by 2 months'],['Anterior fontanel','Closes at 12–24 months']]},
+ {name:'Safety & sleep',mod:2,pairs:[['Cow\u2019s milk limit (toddler)','16–24 oz per day'],['Rear-facing car seat','At least until age 2'],['Booster seat','Until belt fits (~4\'9")'],['Preschool sleep','10–13 hours'],['School-age activity','60 min every day'],['Water heater','120\u00b0F or lower']]},
+ {name:'Heart rate by age',mod:2,pairs:[['Newborn HR','110–160'],['Infant HR','90–160'],['Toddler HR','80–140'],['Preschool HR','70–120'],['School-age HR','60–110'],['Adolescent HR','50–100']]},
+ {name:'Nutrition numbers',mod:2,pairs:[['Infant calories/day','700–1,000'],['Toddler calories/day','1,000–1,400'],['Toddler milk limit','16–24 oz/day'],['Juice after 12 months','Max 4 oz/day'],['Iron-rich foods (toddler)','3 servings/day'],['New infant food','One every 3–5 days']]},
+ {name:'Disease hallmarks',mod:3,pairs:[['Koplik spots','Measles'],['"Slapped cheek" rash','Fifth disease'],['Strawberry tongue','Scarlet fever'],['Rash as the fever breaks','Roseola'],['"Dewdrop on a rose petal"','Varicella'],['Parotid gland swelling','Mumps']]},
+ {name:'More hallmarks',mod:3,pairs:[['Thick gray pseudomembrane','Diphtheria'],['"Whoop" after coughing fits','Pertussis'],['Lockjaw (trismus)','Tetanus'],['Drooling, tripod, 4 Ds','Hib epiglottitis'],['Splenomegaly, no contact sports','Mono'],['Honey-crusted lesions','Impetigo']]},
+ {name:'Vaccine ages',mod:3,pairs:[['Hep B #1','Birth'],['MMR #1 + varicella #1','12–15 months'],['"Kindergarten shots"','4–6 years'],['Tdap, HPV, MenACWY','11–12 years'],['MenACWY booster','16 years'],['Hep A (2 doses)','12–23 months']]}
+];
+var DISEASES=[
+ {id:'measles',n:'Measles (rubeola)',iso:'Airborne',clues:['High fever with the "3 Cs": cough, coryza, conjunctivitis.','Small red spots with white centers inside the cheeks.','Red blotchy rash that starts at the hairline and spreads down.','Contagious 4 days before to 4 days after the rash; lingers in air ~2 hr.'],pearl:'Koplik spots are the telltale sign. Give vitamin A. Pneumonia is the most common serious complication.'},
+ {id:'rubella',n:'Rubella',iso:'Droplet',clues:['Mild illness with a low fever.','Swollen lymph nodes behind the ears.','Flushed, pinpoint pink rash that starts on the face and spreads quickly.','Devastating to a fetus: deafness, cataracts, heart defects.'],pearl:'Benign in children, but keep them away from pregnant people (congenital rubella syndrome).'},
+ {id:'mumps',n:'Mumps',iso:'Droplet',clues:['Fever, headache, muscle aches, poor appetite.','Then swelling near the jaw, on one or both sides.','Avoid sour foods; they make it ache.','Isolate 5 days after the swelling starts.'],pearl:'Parotid swelling. Watch for orchitis (~30% of post-pubertal males), meningitis, and one-sided deafness.'},
+ {id:'varicella',n:'Varicella (chickenpox)',iso:'Airborne',clues:['Very itchy rash that comes in crops.','All stages present at once: macule, papule, vesicle, crust.','"Dewdrop on a rose petal" lesions starting on the trunk.','Contagious until every lesion is crusted.'],pearl:'Airborne + contact. Never give aspirin (Reye syndrome). Trim nails to prevent impetigo.'},
+ {id:'fifth',n:'Fifth disease (parvovirus B19)',iso:'Droplet',clues:['Flu-like illness first.','Bright red cheeks.','Then a lacy, net-like rash on the trunk and limbs.','Once the rash appears, the child can go back to school.'],pearl:'Contagious BEFORE the rash. Keep away from pregnant people and kids with sickle cell disease.'},
+ {id:'roseola',n:'Roseola (HHV-6)',iso:'Standard',clues:['Usually 6–12 months old (90% under 2).','High fever, 103–105\u00b0F, for 3–5 days.','The rash appears right as the fever disappears.','Rose-pink, non-itchy spots on the trunk and neck.'],pearl:'Teach parents about febrile seizures during the high fever.'},
+ {id:'scarlet',n:'Scarlet fever (group A strep)',iso:'Droplet',clues:['Strep throat: sore throat and fever.','Fine red rash that feels like sandpaper.','Strawberry tongue and a pale ring around the mouth.','Red lines in skin folds (Pastia lines).'],pearl:'Full 10 days of penicillin or amoxicillin to prevent rheumatic fever and glomerulonephritis. Not contagious after 24 hr of antibiotics.'},
+ {id:'hfmd',n:'Hand, foot & mouth disease',iso:'Contact',clues:['Mostly under 5, late spring to summer, daycare outbreaks.','Low fever and sore throat.','Painful mouth ulcers with a red border.','Small red spots or blisters on the hands and feet.'],pearl:'Main risk is dehydration: offer cold, soft foods. Contact precautions if diapered.'},
+ {id:'mono',n:'Infectious mononucleosis (EBV)',iso:'Standard',clues:['Usually 15–24 years old.','Fever, sore throat with exudate, extreme fatigue.','Swollen lymph nodes; positive Monospot test.','Enlarged spleen.'],pearl:'No contact sports for 4–6 weeks. Report sudden LUQ or left-shoulder pain (splenic rupture).'},
+ {id:'pertussis',n:'Pertussis (whooping cough)',iso:'Droplet',clues:['Starts like a cold (catarrhal stage, most contagious).','Then rapid coughing fits in one breath.','A high-pitched sound at the end of the fit; vomiting after.','Infants may have apnea instead.'],pearl:'Infants have the highest death rate. Tdap in every pregnancy plus cocooning.'},
+ {id:'diphtheria',n:'Diphtheria',iso:'Droplet',clues:['Sore throat and fever in an unvaccinated child.','"Bull neck" swelling.','Thick gray membrane over the tonsils that can block the airway.','The toxin can cause myocarditis.'],pearl:'Antitoxin + penicillin G or erythromycin; airway first.'},
+ {id:'hib',n:'Hib epiglottitis',iso:'Droplet',clues:['Age 6 months–5 years.','Sudden high fever, looks very sick.','Drooling, muffled voice, trouble swallowing.','Sits forward in a tripod position.'],pearl:'Do NOT put a tongue blade in the throat. Keep calm and upright, airway equipment ready.'},
+ {id:'tetanus',n:'Tetanus',iso:'Standard',clues:['Spores in soil entered through a puncture wound.','Painful muscle spasms.','Jaw is locked shut (trismus).','Noise and light make the spasms worse.'],pearl:'Not spread person to person. Quiet, dim room; tetanus immune globulin.'},
+ {id:'meningitis',n:'Bacterial meningitis',iso:'Droplet',clues:['Infant with fever, irritability, high-pitched cry.','Bulging anterior fontanel.','Older child: stiff neck, photophobia, Kernig/Brudzinski signs.','CSF: very high WBC, high protein, LOW glucose.'],pearl:'Droplet precautions until 24 hr of IV antibiotics. Start antibiotics right after cultures.'},
+ {id:'impetigo',n:'Impetigo',iso:'Contact',clues:['Ages 2–5, often summer or fall.','Lesions often on the face.','Honey-colored crusts.','Can follow scratching chickenpox lesions.'],pearl:'Remove crusts with soap and water, then mupirocin. Watch for post-strep glomerulonephritis.'},
+ {id:'scabies',n:'Scabies',iso:'Contact',clues:['Intense itching, worse at night.','Thin, linear burrows.','Between the fingers and on the wrists.','Spread by skin-to-skin contact.'],pearl:'Permethrin for the child AND all close contacts; hot-water laundry.'},
+ {id:'lice',n:'Head lice',iso:'Contact',clues:['Itchy scalp.','Oval specks glued to the hair shaft near the scalp.','They don\u2019t brush off like dandruff.','Treatment is repeated in 1 week.'],pearl:'Permethrin, repeat in 1 week; comb out nits; check all household members.'},
+ {id:'hepb',n:'Hepatitis B',iso:'Standard',clues:['Spread by blood and body fluids, and at birth.','About half have no symptoms.','Jaundice, dark urine, clay-colored stools.','Newborns of HBsAg+ mothers need vaccine + HBIG within 12 hr.'],pearl:'Standard precautions. Hep B vaccine #1 within 24 hours of birth.'}
+];
+var ISO_ITEMS=[
+ ['Measles','Airborne','Lingers in the air ~2 hours: N95, negative-pressure room.'],['Varicella','Airborne','Airborne + contact until all lesions crust.'],['Tuberculosis','Airborne','N95 and negative-pressure room.'],['Disseminated zoster','Airborne','Airborne + contact.'],
+ ['Pertussis','Droplet','Surgical mask within 3 ft.'],['Influenza','Droplet','Surgical mask within 3 ft.'],['Mumps','Droplet','Isolate 5 days after the glands swell.'],['Rubella','Droplet','Keep away from pregnant people.'],['Hib / epiglottitis','Droplet','No tongue blade!'],['Bacterial meningitis','Droplet','Until 24 hr of IV antibiotics.'],['Diphtheria','Droplet','Airway first.'],['Scarlet fever','Droplet','Not contagious after 24 hr of antibiotics.'],['Fifth disease','Droplet','Contagious before the rash appears.'],['Adenovirus','Droplet','Listed under droplet on your study sheet.'],
+ ['MRSA','Contact','Gown and gloves; dedicated equipment.'],['C. diff','Contact','Gown and gloves; soap and water.'],['RSV','Contact','Listed under contact on your study sheet.'],['Impetigo','Contact','Cover lesions; wash linens.'],['Lice','Contact','Hot-water laundry; repeat treatment in 1 week.'],['Scabies','Contact','Treat all close contacts.'],['HFMD (diapered child)','Contact','Careful diaper handling and hand hygiene.']
+];
+var VACS=['Hep B','DTaP','Hib','IPV','PCV','Rotavirus','MMR','Varicella','Hep A','Flu','Tdap','HPV','MenACWY'];
+var VISITS=[
+ {age:'Birth',req:['Hep B'],opt:[],note:'Hep B #1 within 24 hours. If mom is HBsAg+, Hep B vaccine + HBIG within 12 hours.'},
+ {age:'2 months',req:['DTaP','Hib','IPV','PCV','Rotavirus'],opt:['Hep B'],note:'The big five at 2 months: DTaP, Hib, IPV, PCV, rotavirus. Hep B #2 is due at 1–2 months.'},
+ {age:'4 months',req:['DTaP','Hib','IPV','PCV','Rotavirus'],opt:[],note:'Repeat the 2-month set: DTaP, Hib, IPV, PCV, rotavirus.'},
+ {age:'6 months',req:['DTaP','PCV','Flu'],opt:['Rotavirus','Hib','Hep B','IPV'],note:'DTaP, PCV, and the first flu shot (yearly from 6 months; 2 doses the first season if under 9). Rotavirus and Hib depend on the brand; Hep B #3 and IPV #3 fall anywhere in 6–18 months.'},
+ {age:'12–15 months',req:['MMR','Varicella','Hib','PCV'],opt:['Hep A','Flu','Hep B','IPV'],note:'First live vaccines: MMR #1 and varicella #1, plus the Hib booster and PCV #4. Hep A starts at 12–23 months.'},
+ {age:'15–18 months',req:['DTaP'],opt:['Hep A','Flu','Hep B','IPV'],note:'DTaP #4 at 15–18 months.'},
+ {age:'4–6 years',req:['DTaP','IPV','MMR','Varicella'],opt:['Flu'],note:'The "kindergarten shots": DTaP #5, IPV #4, MMR #2, varicella #2.'},
+ {age:'11–12 years',req:['Tdap','HPV','MenACWY'],opt:['Flu'],note:'Tdap, HPV (2 doses if started at 9–14), and MenACWY #1.'},
+ {age:'16 years',req:['MenACWY'],opt:['Flu'],note:'MenACWY booster at 16 (MenB is a shared decision at 16–18).'}
+];
+var TF=[
+ ['Egg allergy is a contraindication to the flu vaccine.',false,'Egg allergy is NOT a contraindication and needs no special precautions.'],
+ ['MMR and varicella are given subcutaneously.',true,'Live MMR and varicella are given subQ.'],
+ ['DTaP is given to children 7 years and older.',false,'DTaP is for children under 7; Tdap is used at 7 and older.'],
+ ['Hib vaccine should not be given before 6 weeks of age.',true,'Hib is not given before 6 weeks.'],
+ ['A child with fifth disease is contagious after the rash appears.',false,'Fifth disease is contagious BEFORE the rash; once it appears, the child can attend school.'],
+ ['Scarlet fever is no longer contagious after 24 hours of antibiotics.',true,'Correct, and the full 10-day course is still finished.'],
+ ['Aspirin is safe for fever in a child with chickenpox.',false,'Never: aspirin with viral illness risks Reye syndrome. Use acetaminophen.'],
+ ['A teen with mono should avoid contact sports for 4–6 weeks.',true,'The enlarged spleen can rupture.'],
+ ['Measles is contagious from 4 days before to 4 days after the rash.',true,'And it stays in the air about 2 hours.'],
+ ['Rotavirus vaccine is contraindicated with a history of intussusception.',true,'Also contraindicated with SCID.'],
+ ['The Babinski reflex usually disappears by 4 months.',false,'Babinski lasts until about 12 months; Moro is the one gone by ~4 months.'],
+ ['The posterior fontanel closes at 12–24 months.',false,'The posterior closes by 2 months; the ANTERIOR closes at 12–24 months.'],
+ ['Toddlers should drink no more than 16–24 oz of cow\u2019s milk a day.',true,'More than that causes iron-deficiency anemia.'],
+ ['Toddler tantrums happening more than 5 times a day should be reported.',true,'Also report >15 minutes, extreme aggression, or breath-holding with fainting.'],
+ ['Most toddlers say about 50 words by 30 months.',true,'2-word phrases at 2 years, ~50 words at 30 months, 3-word sentences at 3.'],
+ ['Live vaccines are safe during pregnancy.',false,'Live vaccines (MMR, varicella) are contraindicated in pregnancy.'],
+ ['Varicella is contagious until all lesions are crusted.',true,'From 1–2 days before the rash until every lesion crusts.'],
+ ['In bacterial meningitis, CSF glucose is high.',false,'Bacteria eat sugar: CSF glucose is LOW (<40 mg/dL).'],
+ ['Meningitis needs droplet precautions until 24 hours of IV antibiotics.',true,'Close contacts also get prophylactic antibiotics.'],
+ ['Rotavirus vaccine is given orally.',true,'Rotavirus is the oral live vaccine.'],
+ ['Hep B vaccine #1 is given within 24 hours of birth.',true,'If mom is HBsAg+, add HBIG within 12 hours.'],
+ ['HPV is routinely started at 11–12 years.',true,'Can start as early as 9; teens may faint, so keep them seated and observe 15 minutes.'],
+ ['Preschoolers should have about 1 hour of screen time a day or less.',true,'High-quality programs, watched together.'],
+ ['Parallel play is typical of preschoolers.',false,'Parallel play is the TODDLER stage; preschoolers move to associative/cooperative play.'],
+ ['Object permanence develops at 4–8 months.',true,'That\u2019s why separation anxiety starts around 6–8 months.'],
+ ['Roseola\u2019s rash appears while the fever is at its highest.',false,'The rash appears as the fever disappears.'],
+ ['Mumps patients are isolated for 5 days after gland swelling starts.',true,'Droplet precautions.'],
+ ['The anterior fontanel normally bulges when an infant is calm.',false,'A bulging fontanel at rest suggests increased intracranial pressure.'],
+ ['Infants can be given water before 6 months.',false,'No water before 6 months; breast milk or formula provides all the fluid needed.'],
+ ['Fruit juice can be offered at 9 months.',false,'No juice until after 12 months, then no more than 4 oz/day.'],
+ ['Introduce one new food every 3–5 days.',true,'This makes it easier to spot food allergies.'],
+ ['Prepared formula should be used within 2 hours.',true,'Refrigerate up to 24 hours; discard leftovers in the bottle.'],
+ ['Propping a bottle is fine if the baby is supervised.',false,'Never prop a bottle: choking, ear infections, tooth decay.'],
+ ['Cow\u2019s milk is the most common infant food allergy.',true,'Then egg, peanut, soy, and wheat.'],
+ ['Toddlers need about 2,000–2,500 kcal a day.',false,'Toddlers need about 1,000–1,400 kcal/day in 4–6 small meals and snacks.'],
+ ['Toddlers should have 3 servings of iron-rich foods a day.',true,'Meats, legumes, tofu, fortified cereal.'],
+ ['Allergenic foods like egg and peanut can be introduced before 1 year.',true,'Early introduction lowers allergy risk.'],
+ ['Wasting means low weight-for-length.',true,'Stunting is low height-for-age.'],
+ ['A newborn heart rate of 110–160 is normal.',true,'Newborn (0–4 wk) HR 110–160, RR 30–60.'],
+ ['A preschooler\u2019s normal respiratory rate is 30–40.',false,'Preschool (3–5 yr) RR is 20–25.'],
+ ['A toddler\u2019s normal respiratory rate is 25–30.',true,'Toddler (1–2 yr) HR 80–140, RR 25–30.'],
+ ['Adolescent hypertension is 130/80 or higher.',true,'Normal is under 120/80.'],
+ ['An adolescent heart rate of 50–100 is normal.',true,'Adolescent RR is 16–20.'],
+ ['An infant\u2019s normal heart rate is 60–100.',false,'Infant (1–12 mo) HR is 90–160.'],
+ ['A school-age child\u2019s normal heart rate is 60–110.',true,'School-age RR is 20–25.'],
+ ['A BP cuff that is too small gives a falsely high reading.',true,'The cuff should cover about 80% of the limb.']
+];
+var VR=[
+ {g:'Newborn',ages:['3 days old','10 days old','2 weeks old','3 weeks old'],hr:[110,160],rr:[30,60]},
+ {g:'Infant',ages:['2 months old','5 months old','8 months old','11 months old'],hr:[90,160],rr:[25,60]},
+ {g:'Toddler',ages:['15 months old','20 months old','2 years old'],hr:[80,140],rr:[25,30]},
+ {g:'Preschooler',ages:['3 years old','4 years old','5 years old'],hr:[70,120],rr:[20,25]},
+ {g:'School-age',ages:['7 years old','9 years old','11 years old'],hr:[60,110],rr:[20,25]},
+ {g:'Adolescent',ages:['14 years old','16 years old','17 years old'],hr:[50,100],rr:[16,20],bp:true}
+];
+var FEED_AGES=[{v:0,l:'Birth',u:''},{v:4,l:'4',u:'mo'},{v:6,l:'6',u:'mo'},{v:9,l:'9',u:'mo'},{v:12,l:'12',u:'mo'},{v:18,l:'18',u:'mo'},{v:24,l:'2',u:'yr'}];
+var FEEDS=[
+ {id:'fd1',em:'🍼',t:'Breast milk or iron-fortified formula ONLY',a:[0],why:'First 6 months: only breast milk or iron-fortified formula.'},
+ {id:'fd2',em:'💧',t:'Start vitamin D drops (exclusively breastfed baby)',a:[0],why:'Exclusively breastfed infants need vitamin D drops starting shortly after birth (use the provided dropper).'},
+ {id:'fd3',em:'🩸',t:'AAP suggests supplemental iron for breastfed babies',a:[4],why:'Iron stores last ~6 months; AAP suggests iron from 4 months until iron-rich foods are added.'},
+ {id:'fd4',em:'🔋',t:'Infant\u2019s iron stores from birth run out',a:[6],why:'Iron stores last until about 6 months, which is why iron-fortified cereal is a first food.'},
+ {id:'fd5',em:'🥣',t:'First solid: iron-fortified cereal',a:[6],why:'Around 6 months, when ready (head control, sits with support, tongue thrust gone). Start with iron-fortified cereal.'},
+ {id:'fd6',em:'🚰',t:'Water can be introduced',a:[6],why:'No water before 6 months; introduce it around 6 months with solids.'},
+ {id:'fd7',em:'🫐',t:'Self-feeds finger foods; drinks from a cup with help',a:[9,12],why:'9–12 months: pincer grasp lets infants self-feed finger foods and drink from a cup with help.'},
+ {id:'fd8',em:'🥛',t:'Switch to whole cow\u2019s milk (or fortified unsweetened soy)',a:[12],why:'At 12 months: may switch to whole cow\u2019s milk or fortified unsweetened soy milk.'},
+ {id:'fd9',em:'🍯',t:'Honey becomes safe',a:[12],why:'No honey before 12 months (infant botulism).'},
+ {id:'fd10',em:'🧃',t:'Fruit juice allowed (max 4 oz a day)',a:[12],why:'No juice until after 12 months; then no more than 4 oz/day.'},
+ {id:'fd11',em:'🔬',t:'Routine iron-deficiency anemia screen',a:[12],why:'Screen around 12 months (range 9–24 months).'},
+ {id:'fd12',em:'🥤',t:'Drinks from an open cup (spills); tries a spoon',a:[18],why:'18 months: open cup with spills, tries a spoon.'},
+ {id:'fd13',em:'🧀',t:'Whole milk no longer required',a:[24],why:'Whole milk until age 2 (brain development); limit milk to 16–24 oz/day.'}
+];
+var LEVELS=[[0,'Newborn'],[150,'Infant'],[400,'Toddler'],[750,'Preschooler'],[1200,'School-ager'],[1800,'Adolescent'],[2600,'Student nurse'],[3600,'Peds RN']];
+
+/* =====================================================================
+   STATE (saved in this browser)
+   ===================================================================== */
+var KEY='peds_lockin_v1';
+var S={xp:0,best:{},bestStreak:0,misses:[]};
+function load(){try{var r=localStorage.getItem(KEY);if(r){var o=JSON.parse(r);S.xp=o.xp||0;S.best=o.best||{};S.bestStreak=o.bestStreak||0;S.misses=o.misses||[];}}catch(e){}}
+function save(){try{localStorage.setItem(KEY,JSON.stringify(S));}catch(e){}}
+function level(){var cur=LEVELS[0],nxt=null;for(var i=0;i<LEVELS.length;i++){if(S.xp>=LEVELS[i][0]){cur=LEVELS[i];nxt=LEVELS[i+1]||null;}}return {name:cur[1],pct:nxt?Math.round((S.xp-cur[0])/(nxt[0]-cur[0])*100):100,next:nxt};}
+function refreshTop(){var l=level();$('lvlName').textContent=l.name;$('lvlFill').style.width=l.pct+'%';$('xpTxt').textContent=S.xp;$('bestStreak').textContent=S.bestStreak;}
+function addXP(n){var before=level().name;S.xp+=n;var after=level().name;refreshTop();save();if(after!==before)toast('🎉 Level up! You\u2019re now a '+after+'.');}
+function addMiss(m){ // m: {key,prompt,options,answer,explain}
+  S.misses=S.misses.filter(function(x){return x.key!==m.key;});S.misses.unshift(m);if(S.misses.length>80)S.misses.length=80;save();}
+function clearMiss(key){S.misses=S.misses.filter(function(x){return x.key!==key;});save();}
+function setBest(g,score){if(!S.best[g]||score>S.best[g]){S.best[g]=score;save();return true;}return false;}
+
+/* =====================================================================
+   HELPERS
+   ===================================================================== */
+function $(id){return document.getElementById(id);}
+function shuffle(a){a=a.slice();for(var i=a.length-1;i>0;i--){var j=Math.floor(Math.random()*(i+1));var t=a[i];a[i]=a[j];a[j]=t;}return a;}
+function pick(a,n){return shuffle(a).slice(0,n);}
+function esc(s){return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
+function el(tag,cls,html){var e=document.createElement(tag);if(cls)e.className=cls;if(html!==undefined)e.innerHTML=html;return e;}
+var toastT;function toast(t){var x=$('toast');x.textContent=t;x.classList.add('show');clearTimeout(toastT);toastT=setTimeout(function(){x.classList.remove('show');},2600);}
+var timers=[];function clearTimers(){timers.forEach(function(t){clearInterval(t);clearTimeout(t);});timers=[];}
+function mult(streak){return streak>=6?3:(streak>=3?2:1);}
+var run=null; // current round {streak, score, correct, total, missed:[]}
+function newRun(){run={streak:0,score:0,correct:0,total:0,missed:[]};}
+function hit(base){run.streak++;run.correct++;run.total++;var m=mult(run.streak);var pts=base*m;run.score+=pts;addXP(pts);if(run.streak>S.bestStreak){S.bestStreak=run.streak;save();refreshTop();}return {pts:pts,m:m};}
+function miss(rec){run.streak=0;run.total++;run.missed.push(rec);if(rec.key)addMiss(rec);}
+function hud(extra){return '<div class="hud">'+(extra||'')+'<span class="pill">Score <b id="hScore">'+run.score+'</b></span><span class="pill">🔥 <b id="hStreak">'+run.streak+'</b>'+(mult(run.streak)>1?' <span class="combo">×'+mult(run.streak)+'</span>':'')+'</span></div>';}
+function updHud(){if($('hScore'))$('hScore').textContent=run.score;var s=$('hStreak');if(s){s.parentNode.innerHTML='🔥 <b id="hStreak">'+run.streak+'</b>'+(mult(run.streak)>1?' <span class="combo">×'+mult(run.streak)+'</span>':'');}}
+function shell(title){clearTimers();var app=$('app');app.innerHTML='';var top=el('div','gtop');top.innerHTML='<button class="back" id="bk">← All games</button><div class="gtitle">'+title+'</div><div id="hudBox" style="margin-left:auto"></div>';app.appendChild(top);$('bk').onclick=home;var p=el('div','progress');p.innerHTML='<i id="prog"></i>';app.appendChild(p);var c=el('div','card');c.id='stage';app.appendChild(c);window.scrollTo(0,0);return c;}
+function setHud(extra){$('hudBox').innerHTML=hud(extra);}
+function prog(i,n){var p=$('prog');if(p)p.style.width=Math.round(i/n*100)+'%';}
+
+/* ---------- results ---------- */
+function results(game,title,replay){
+  clearTimers();
+  var pct=run.total?Math.round(run.correct/run.total*100):0;
+  var nb=setBest(game,run.score);
+  var c=$('stage');prog(1,1);
+  var msg=pct>=90?'Locked in. That content is sticking. 🔒':pct>=70?'Solid round. Replay to make the misses stick.':'These are worth another pass. The misses below are saved to your review deck.';
+  var h='<div class="results"><h2>'+title+' complete</h2><div class="score-line">'+run.score+' pts</div><p>'+run.correct+' of '+run.total+' correct ('+pct+'%)'+(nb?' · <b style="color:var(--caramel)">New best!</b>':'')+'</p><p class="sub">'+msg+'</p>';
+  if(run.missed.length){h+='<h3 style="margin-top:1.2rem;font-size:1.1rem;color:var(--navy)">Lock these in</h3><div class="missed-list">';
+    run.missed.forEach(function(m){h+='<div class="missed-item"><b>'+esc(m.prompt)+'</b><br>✓ '+esc(m.options[m.answer])+(m.explain?'<br><span style="color:var(--ink2)">'+esc(m.explain)+'</span>':'')+'</div>';});h+='</div>';}
+  h+='<div class="res-actions"><button class="primary" id="again">Play again</button><button class="secondary" id="toMenu">All games</button>'+(S.misses.length?'<button class="secondary" id="toRev">Review my misses ('+S.misses.length+')</button>':'')+'</div></div>';
+  c.innerHTML=h;$('again').onclick=replay;$('toMenu').onclick=home;if($('toRev'))$('toRev').onclick=reviewGame;
+  if(pct===100&&run.total>=5)toast('💯 Perfect round!');
+}
+
+/* ---------- generic multiple choice renderer ---------- */
+function mcq(c,q,onDone,opts){ // q:{prompt,sub,options,answer,explain,key}
+  opts=opts||{};
+  var h='<div class="prompt">'+esc(q.prompt)+'</div>'+(q.sub?'<div class="sub">'+esc(q.sub)+'</div>':'')+'<div class="opts" id="opts"></div><div class="fb" id="fb"></div><button class="next" id="nx">Next</button>';
+  c.innerHTML=h;var box=$('opts');
+  q.options.forEach(function(o,i){var b=el('button','opt',esc(o));b.onclick=function(){answer(i);};box.appendChild(b);});
+  var answered=false;
+  function answer(i){if(answered)return;answered=true;var bs=box.querySelectorAll('.opt');bs.forEach(function(b){b.disabled=true;});
+    var ok=i===q.answer;bs[q.answer].classList.add('right');if(!ok)bs[i].classList.add('wrong');
+    var fb=$('fb');var r;
+    if(ok){r=hit(opts.base||10);fb.className='fb show good';fb.innerHTML='<strong>✓ Correct! +'+r.pts+(r.m>1?' (×'+r.m+' streak)':'')+'</strong>'+esc(q.explain||'');if(q.key&&opts.review)clearMiss(q.key);}
+    else{miss({key:q.key,prompt:q.prompt,options:q.options,answer:q.answer,explain:q.explain});fb.className='fb show bad';fb.innerHTML='<strong>✗ It\u2019s '+esc(q.options[q.answer])+'</strong>'+esc(q.explain||'');c.classList.add('shake');setTimeout(function(){c.classList.remove('shake');},400);}
+    updHud();var nx=$('nx');nx.classList.add('show');nx.focus();nx.onclick=onDone;
+    if(opts.auto)timers.push(setTimeout(onDone,ok?700:1600));
+  }
+}
+
+/* =====================================================================
+   GAME 1 — GROWTH RULER
+   ===================================================================== */
+function feedGame(){rulerGame({data:FEEDS,ages:FEED_AGES,key:'feed',title:'Feeding Timeline',n:10,pfx:'Feed: '});}
+function rulerGame(cfg){
+  cfg=cfg||{data:MILESTONES,ages:AGES,key:'ruler',title:'Growth Ruler',n:10,pfx:'When: '};var AG=cfg.ages;function lab(v){var a=AG.filter(function(x){return x.v===v;})[0];return a?(a.l+(a.u?' '+a.u:'')):v;}
+  newRun();var c=shell(cfg.title);var deck=pick(cfg.data,cfg.n),i=0;
+  function show(){
+    if(i>=deck.length)return results(cfg.key,cfg.title,function(){rulerGame(cfg);});
+    setHud();prog(i,deck.length);var m=deck[i];
+    c.innerHTML='<div class="milestone-card"><div class="em">'+m.em+'</div><div><div class="t">'+esc(m.t)+'</div><div class="d">Tap the age on the ruler when this usually happens.</div></div></div><div class="timer"><i id="tm"></i></div><div class="ruler-wrap"><div class="ruler"><div class="ruler-slots" id="slots"></div></div>'+(cfg.key==='ruler'?'<div class="ruler-legend"><span style="grid-column:span 5">Infancy</span><span style="grid-column:span 5">Toddler</span><span style="grid-column:span 3">Preschool &amp; school-age</span></div>':'')+'</div><div class="fb" id="fb"></div><button class="next" id="nx">Next</button>';
+    var slots=$('slots');slots.style.gridTemplateColumns='repeat('+AG.length+',1fr)';var t0=Date.now(),LIM=12000;var done=false;
+    AG.forEach(function(a){var b=el('button','slot',a.l+'<small>'+(a.u||'&nbsp;')+'</small>');b.setAttribute('aria-label',a.l+' '+a.u);b.onclick=function(){choose(a.v,b);};slots.appendChild(b);});
+    var tick=setInterval(function(){var left=Math.max(0,LIM-(Date.now()-t0));var tm=$('tm');if(tm)tm.style.width=(left/LIM*100)+'%';},100);timers.push(tick);
+    function choose(v,btn){if(done)return;done=true;clearInterval(tick);var bs=slots.querySelectorAll('.slot');bs.forEach(function(b){b.disabled=true;});
+      var ok=m.a.indexOf(v)!==-1;var fast=(Date.now()-t0)<6000;
+      AG.forEach(function(a,k){if(m.a.indexOf(a.v)!==-1)bs[k].classList.add(ok&&a.v===v?'right':'hint');});
+      var fb=$('fb');var right=m.a.map(lab).join(' or ');
+      if(ok){btn.classList.add('right');var r=hit(fast?15:10);fb.className='fb show good';fb.innerHTML='<strong>✓ '+right+'! +'+r.pts+(fast?' (speed bonus)':'')+(r.m>1?' ×'+r.m:'')+'</strong>'+esc(m.why);}
+      else{btn.classList.add('wrong');miss({key:m.id,prompt:cfg.pfx+m.t+'?',options:[right],answer:0,explain:m.why});fb.className='fb show bad';fb.innerHTML='<strong>✗ It\u2019s '+right+'</strong>'+esc(m.why);}
+      updHud();var nx=$('nx');nx.classList.add('show');nx.focus();nx.onclick=function(){i++;show();};}
+  }
+  show();
+}
+
+/* =====================================================================
+   GAME 2 — WHO'S THIS KID? (clue reveal)
+   ===================================================================== */
+function detectiveGame(){
+  newRun();var c=shell('Who\u2019s This Kid?');var rounds=shuffle(GROUPS.concat(pick(GROUPS,3))),i=0;
+  function show(){
+    if(i>=rounds.length)return results('kid','Who\u2019s This Kid?',detectiveGame);
+    setHud();prog(i,rounds.length);var g=rounds[i];var clues=pick(CLUES[g],4);var shown=1;var done=false;
+    function render(){
+      var worth=[30,20,12,8][shown-1];
+      var h='<div class="prompt">Who am I?</div><div class="sub">Guess early for more points. Reveal another clue if you need it.</div><ul class="clues">';
+      clues.forEach(function(cl,k){h+='<li class="clue'+(k<shown?'':' hidden')+'">'+(k<shown?esc(cl):'Clue '+(k+1)+' hidden')+'</li>';});
+      h+='</ul>'+(done?'':'<div class="worth">Worth '+worth+' pts right now</div>')+(shown<4&&!done?'<button class="clue-btn" id="more">Reveal another clue</button>':'')+'<div class="opts" id="opts"></div><div class="fb" id="fb"></div><button class="next" id="nx">Next kid</button>';
+      c.innerHTML=h;
+      if($('more'))$('more').onclick=function(){shown++;render();};
+      var box=$('opts');GROUPS.forEach(function(G){var b=el('button','opt',esc(G)+' <span style="font-weight:500;color:var(--mute)">('+GROUP_AGES[G]+')</span>');b.onclick=function(){guess(G,b);};box.appendChild(b);});
+      function guess(G,b){if(done)return;done=true;var bs=box.querySelectorAll('.opt');bs.forEach(function(x){x.disabled=true;});var ok=G===g;bs[GROUPS.indexOf(g)].classList.add('right');
+        shown=4;var fb;
+        var lis=c.querySelectorAll('.clue');clues.forEach(function(cl,k){lis[k].className='clue';lis[k].textContent=cl;});
+        if(c.querySelector('.worth'))c.querySelector('.worth').remove();if($('more'))$('more').remove();
+        fb=$('fb');
+        if(ok){var r=hit(worth);fb.className='fb show good';fb.innerHTML='<strong>✓ '+g+'! +'+r.pts+(r.m>1?' ×'+r.m:'')+'</strong>All four clues describe a '+g.toLowerCase()+' ('+GROUP_AGES[g]+').';}
+        else{b.classList.add('wrong');miss({key:'kid-'+g+'-'+clues[0].slice(0,24),prompt:'Which age group? "'+clues[0]+'"',options:[g],answer:0,explain:'All of these describe a '+g.toLowerCase()+': '+clues.join(' ')});fb.className='fb show bad';fb.innerHTML='<strong>✗ This was a '+g.toLowerCase()+' ('+GROUP_AGES[g]+')</strong>Reread the clues above: each one is a '+g.toLowerCase()+' fact.';}
+        updHud();var nx=$('nx');nx.classList.add('show');nx.focus();nx.onclick=function(){i++;show();};}
+    }
+    render();
+  }
+  show();
+}
+
+/* =====================================================================
+   GAME 3 — FLIP & MATCH (memory)
+   ===================================================================== */
+function memoryGame(deckIdx){
+  newRun();var c=shell('Flip & Match');
+  if(deckIdx===undefined){
+    var h='<div class="prompt">Pick a deck</div><div class="sub">Flip two cards, then decide whether they match. Points come from your Yes/No calls.</div><div class="deck-pick">';
+    DECKS.forEach(function(d,k){h+='<button class="deck-btn" data-k="'+k+'">'+(d.mod===2?'🟡 ':'🔵 ')+esc(d.name)+(S.best['mem'+k]?' · best '+S.best['mem'+k]:'')+'</button>';});
+    h+='</div><p class="sub" style="margin-top:.8rem">🟡 Module 2 · 🔵 Module 3</p>';c.innerHTML=h;
+    c.querySelectorAll('.deck-btn').forEach(function(b){b.onclick=function(){memoryGame(+b.dataset.k);};});setHud();return;}
+  var D=DECKS[deckIdx];var cards=[];D.pairs.forEach(function(p,k){cards.push({t:p[0],p:k});cards.push({t:p[1],p:k});});cards=shuffle(cards);
+  var up=[],matched=0,checks=0,lock=false;
+  c.innerHTML='<div class="prompt">'+esc(D.name)+'</div><div class="sub">Flip two cards, then decide: do they match? You score on your answer, not on luck. Find all 6 pairs.</div><div class="mem-grid" id="mg"></div><div class="ask" id="ask"></div>';
+  var g=$('mg');setHud('<span class="pill">Pairs <b id="pairsFound">0</b>/'+D.pairs.length+'</span>');
+  cards.forEach(function(cd,k){var b=el('button','mcard','<span class="back-face">?</span>');b.setAttribute('aria-label','Hidden card');b.onclick=function(){flip(k,b);};g.appendChild(b);cd.el=b;});
+  var ask=$('ask');
+  function idle(){ask.className='ask';ask.innerHTML='<span class="ask-hint">'+(up.length===1?'Flip one more card.':'Flip two cards.')+'</span>';}
+  idle();
+  function flip(k,b){if(lock||cards[k].done||up.indexOf(k)!==-1)return;b.classList.add('up');b.textContent=cards[k].t;b.setAttribute('aria-label',cards[k].t);up.push(k);
+    if(up.length<2){idle();return;}
+    lock=true;var a=cards[up[0]],z=cards[up[1]];
+    ask.className='ask on';
+    ask.innerHTML='<div class="ask-q">Do these two cards match?</div><div class="ask-pair"><span>'+esc(a.t)+'</span><span class="ask-amp">+</span><span>'+esc(z.t)+'</span></div><div class="ask-btns"><button class="primary" id="yes">Yes, they match</button><button class="secondary" id="no">No match</button></div>';
+    $('yes').onclick=function(){judge(true);};$('no').onclick=function(){judge(false);};$('yes').focus();
+    function judge(saidYes){checks++;var isMatch=a.p===z.p;var right=saidYes===isMatch;
+      var msg;
+      if(right){var r=hit(isMatch?15:8);updHud();msg=isMatch?'✓ Correct, they match! +'+r.pts+(r.m>1?' (×'+r.m+' streak)':''):'✓ Correct, not a match. +'+r.pts+(r.m>1?' (×'+r.m+' streak)':'')+' Both cards go back.';}
+      else{run.streak=0;run.total++;updHud();msg=isMatch?'✗ Actually, these DO match.':'✗ Not a match. Both cards go back; keep looking.';
+        run.missed.push({prompt:a.t+' + '+z.t,options:[isMatch?'These match':'Not a match'],answer:0,explain:isMatch?a.t+' pairs with '+z.t+'.':''});}
+      if(isMatch){a.done=z.done=true;a.el.classList.remove('up');z.el.classList.remove('up');a.el.classList.add('done');z.el.classList.add('done');matched++;$('pairsFound').textContent=matched;prog(matched,D.pairs.length);}
+      else{a.el.classList.add('miss');z.el.classList.add('miss');}
+      ask.className='ask on '+(right?'ask-ok':'ask-bad');
+      ask.innerHTML='<div class="ask-q">'+msg+'</div><div class="ask-btns"><button class="primary" id="cont">'+(matched===D.pairs.length?'See results':(isMatch?'Keep going':'Put them back'))+'</button></div>';
+      $('cont').focus();
+      $('cont').onclick=function(){
+        if(!isMatch){[a,z].forEach(function(x){x.el.classList.remove('up','miss');x.el.innerHTML='<span class="back-face">?</span>';x.el.setAttribute('aria-label','Hidden card');});}
+        up=[];lock=false;
+        if(matched===D.pairs.length)finish();else idle();};
+    }
+  }
+  function finish(){
+    var pct=checks?Math.round(run.correct/checks*100):0;var nb=setBest('mem'+deckIdx,run.score);
+    var pairsList=D.pairs.map(function(p){return '<div class="missed-item" style="border-left-color:var(--ok)"><b>'+esc(p[0])+'</b> → '+esc(p[1])+'</div>';}).join('');
+    c.innerHTML='<div class="results"><h2>Deck cleared!</h2><div class="score-line">'+run.score+' pts</div><p>'+run.correct+' of '+checks+' match calls correct ('+pct+'%)'+(nb?' · <b style="color:var(--caramel)">New best!</b>':'')+'</p><h3 style="margin-top:1.1rem;font-size:1.05rem;color:var(--navy)">All 6 pairs: say each one out loud</h3><div class="missed-list">'+pairsList+'</div><div class="res-actions"><button class="primary" id="again">Play this deck again</button><button class="secondary" id="other">Pick another deck</button><button class="secondary" id="toMenu">All games</button></div></div>';
+    $('again').onclick=function(){memoryGame(deckIdx);};$('other').onclick=function(){memoryGame();};$('toMenu').onclick=home;
+    if(pct===100)toast('💯 Every match call was right!');
+  }
+}
+
+
+/* =====================================================================
+   VITALS CHECK
+   ===================================================================== */
+function rnd(a,b){return a+Math.floor(Math.random()*(b-a+1));}
+function vitalVal(lo,hi,normal){
+  if(normal){var pad=Math.max(1,Math.floor((hi-lo)*0.12));return rnd(lo+pad,hi-pad);}
+  var d=Math.max(5,Math.round((hi-lo)*0.2))+rnd(0,Math.max(3,Math.round((hi-lo)*0.2)));
+  if(Math.random()<0.6||lo-d<6)return hi+d;return lo-d;
+}
+function makeVitalsCase(){
+  var R=VR[Math.floor(Math.random()*VR.length)];var age=R.ages[Math.floor(Math.random()*R.ages.length)];
+  var items=[];
+  var hrN=Math.random()<0.55,rrN=Math.random()<0.55;
+  var hr=vitalVal(R.hr[0],R.hr[1],hrN),rr=vitalVal(R.rr[0],R.rr[1],rrN);
+  items.push({k:'Heart rate',v:hr+'/min',normal:hrN,range:R.hr[0]+'–'+R.hr[1],why:hrN?'Within the '+R.g.toLowerCase()+' range of '+R.hr[0]+'–'+R.hr[1]+'.':(hr>R.hr[1]?'Above':'Below')+' the '+R.g.toLowerCase()+' range of '+R.hr[0]+'–'+R.hr[1]+' ('+(hr>R.hr[1]?'tachycardia':'bradycardia')+').'});
+  items.push({k:'Respiratory rate',v:rr+'/min',normal:rrN,range:R.rr[0]+'–'+R.rr[1],why:rrN?'Within the '+R.g.toLowerCase()+' range of '+R.rr[0]+'–'+R.rr[1]+'.':(rr>R.rr[1]?'Above':'Below')+' the '+R.g.toLowerCase()+' range of '+R.rr[0]+'–'+R.rr[1]+' ('+(rr>R.rr[1]?'tachypnea':'bradypnea')+').'});
+  if(R.bp){var bpN=Math.random()<0.5;var sys=bpN?rnd(100,116):rnd(132,146),dia=bpN?rnd(60,76):rnd(81,92);
+    items.push({k:'Blood pressure',v:sys+'/'+dia+' mm Hg',normal:bpN,range:'<120/80',why:bpN?'Normal adolescent BP is under 120/80.':'Adolescent hypertension is 130/80 or higher (confirm on repeated readings with the right cuff size).'});}
+  return {g:R.g,age:age,items:items};
+}
+function vitalsGame(){
+  newRun();var c=shell('Vitals Check');var N=8,i=0;
+  function show(){
+    if(i>=N)return results('vitals','Vitals Check',vitalsGame);
+    setHud();prog(i,N);var cs=makeVitalsCase();var ans={};var done=false;
+    var h='<div class="visit"><span class="age" style="font-size:1.6rem">'+esc(cs.age)+'</span><span class="sub">Resting and calm. Mark each vital sign Normal or Report.</span></div><div class="vit-list" id="vl">';
+    cs.items.forEach(function(it,k){h+='<div class="vit-row" id="vr'+k+'"><div class="vit-k">'+it.k+'</div><div class="vit-v">'+it.v+'</div><div class="vit-btns"><button class="vbtn" data-k="'+k+'" data-a="1">Normal</button><button class="vbtn" data-k="'+k+'" data-a="0">Report</button></div><div class="vit-why" id="vw'+k+'"></div></div>';});
+    h+='</div><button class="primary" id="chk" disabled>Check vitals</button><div class="fb" id="fb"></div><button class="next" id="nx">Next child</button>';
+    c.innerHTML=h;
+    c.querySelectorAll('.vbtn').forEach(function(b){b.onclick=function(){if(done)return;var k=+b.dataset.k;ans[k]=b.dataset.a==='1';b.parentNode.querySelectorAll('.vbtn').forEach(function(x){x.classList.toggle('on',x===b);});$('chk').disabled=Object.keys(ans).length<cs.items.length;};});
+    $('chk').onclick=function(){if(done)return;done=true;$('chk').classList.add('hide');var allOk=true;
+      cs.items.forEach(function(it,k){var ok=ans[k]===it.normal;var row=$('vr'+k);row.classList.add(ok?'v-ok':'v-bad');$('vw'+k).innerHTML=(ok?'✓ ':'✗ ')+'<b>'+(it.normal?'Normal':'Report')+'.</b> '+esc(it.why);
+        row.querySelectorAll('.vbtn').forEach(function(x){x.disabled=true;});
+        if(ok){hit(8);}else{allOk=false;miss({key:'vit-'+cs.g+'-'+it.k,prompt:cs.g+' ('+cs.age+'): '+it.k+' normal range?',options:[it.range],answer:0,explain:it.why});}});
+      var fb=$('fb');fb.className='fb show '+(allOk?'good':'bad');fb.innerHTML='<strong>'+(allOk?'✓ All correct!':'Review the ranges above')+'</strong>'+cs.g+' normals: HR '+cs.items[0].range+', RR '+cs.items[1].range+(cs.items[2]?', BP '+cs.items[2].range+' (HTN ≥130/80)':'')+'.';
+      updHud();var nx=$('nx');nx.classList.add('show');nx.focus();nx.onclick=function(){i++;show();};};
+  }
+  show();
+}
+
+/* =====================================================================
+   GAME 4 — RASH DETECTIVE
+   ===================================================================== */
+function rashGame(){
+  newRun();var c=shell('Rash Detective');var deck=pick(DISEASES,8),i=0;
+  function show(){
+    if(i>=deck.length)return results('rash','Rash Detective',rashGame);
+    setHud();prog(i,deck.length);var d=deck[i];var shown=1,done=false;
+    var distract=pick(DISEASES.filter(function(x){return x.id!==d.id;}),5);var options=shuffle([d].concat(distract));
+    function render(){
+      var worth=[30,22,15,10][shown-1];
+      var h='<div class="prompt">Name that disease</div><div class="sub">Reveal clues one at a time. Then name the isolation precaution for a bonus.</div><ul class="clues">';
+      d.clues.forEach(function(cl,k){h+='<li class="clue'+(k<shown?'':' hidden')+'">'+(k<shown?esc(cl):'Clue '+(k+1)+' hidden')+'</li>';});
+      h+='</ul><div class="worth">Worth '+worth+' pts</div>'+(shown<4?'<button class="clue-btn" id="more">Reveal another clue</button>':'')+'<div class="opts" id="opts"></div><div class="fb" id="fb"></div><div id="iso"></div><button class="next" id="nx">Next case</button>';
+      c.innerHTML=h;if($('more'))$('more').onclick=function(){shown++;render();};
+      var box=$('opts');options.forEach(function(o){var b=el('button','opt',esc(o.n));b.onclick=function(){guess(o,b);};box.appendChild(b);});
+      function guess(o,b){if(done)return;done=true;box.querySelectorAll('.opt').forEach(function(x){x.disabled=true;});var ok=o.id===d.id;
+        box.querySelectorAll('.opt')[options.indexOf(d)].classList.add('right');
+        var lis=c.querySelectorAll('.clue');d.clues.forEach(function(cl,k){lis[k].className='clue';lis[k].textContent=cl;});
+        if(c.querySelector('.worth'))c.querySelector('.worth').remove();if($('more'))$('more').remove();
+        var fb=$('fb');
+        if(ok){var r=hit(worth);fb.className='fb show good';fb.innerHTML='<strong>✓ '+esc(d.n)+'! +'+r.pts+(r.m>1?' ×'+r.m:'')+'</strong>'+esc(d.pearl);}
+        else{b.classList.add('wrong');miss({key:'dz-'+d.id,prompt:'Which disease? '+d.clues.join(' '),options:[d.n],answer:0,explain:d.pearl});fb.className='fb show bad';fb.innerHTML='<strong>✗ It\u2019s '+esc(d.n)+'</strong>'+esc(d.pearl);}
+        updHud();isoBonus();}
+      function isoBonus(){var iso=$('iso');iso.innerHTML='<div class="prompt" style="font-size:1.02rem;margin-top:1rem">Bonus: which precautions for '+esc(d.n)+'?</div><div class="opts" id="isoOpts"></div><div class="fb" id="fb2"></div>';
+        var choices=['Airborne','Droplet','Contact','Standard only'];var ib=$('isoOpts');var ans=d.iso==='Standard'?'Standard only':d.iso;
+        choices.forEach(function(ch){var b=el('button','opt',ch);b.onclick=function(){ib.querySelectorAll('.opt').forEach(function(x){x.disabled=true;});ib.querySelectorAll('.opt')[choices.indexOf(ans)].classList.add('right');var f=$('fb2');
+          if(ch===ans){var r=hit(8);f.className='fb show good';f.innerHTML='<strong>✓ '+ans+' +'+r.pts+'</strong>'+(d.id==='varicella'?'Varicella is airborne + contact.':'');}
+          else{b.classList.add('wrong');miss({key:'iso-'+d.id,prompt:'Precautions for '+d.n+'?',options:[ans],answer:0,explain:d.pearl});f.className='fb show bad';f.innerHTML='<strong>✗ '+ans+'</strong>'+(ans==='Standard only'?'Your study sheet doesn\u2019t list extra isolation for this one; standard precautions apply.':'');}
+          updHud();var nx=$('nx');nx.classList.add('show');nx.focus();nx.onclick=function(){i++;show();};};ib.appendChild(b);});}
+    }
+    render();
+  }
+  show();
+}
+
+/* =====================================================================
+   GAME 5 — ISOLATION SORT (fast, 3 lives)
+   ===================================================================== */
+function isoGame(){
+  newRun();var c=shell('Isolation Sort');var deck=shuffle(ISO_ITEMS),i=0,lives=3;
+  function heartTxt(){return '<span class="pill hearts">'+'❤️'.repeat(lives)+'🤍'.repeat(3-lives)+'</span>';}
+  function show(){
+    if(i>=deck.length||lives<=0)return results('iso','Isolation Sort',isoGame);
+    setHud(heartTxt());prog(i,deck.length);var it=deck[i];var t0=Date.now(),LIM=7000,done=false;
+    c.innerHTML='<div class="sub" style="text-align:center">Tap the precaution. Faster answers earn more points.</div><div class="bug">'+esc(it[0])+'</div><div class="timer"><i id="tm"></i></div><div class="bins" id="bins"></div><div class="fb" id="fb"></div>';
+    var bins=$('bins');var defs=[['Airborne','air','N95 · negative pressure'],['Droplet','drop','Surgical mask within 3 ft'],['Contact','con','Gown + gloves']];
+    defs.forEach(function(d){var b=el('button','bin '+d[1],d[0]+'<small>'+d[2]+'</small>');b.onclick=function(){go(d[0],b);};bins.appendChild(b);});
+    var tick=setInterval(function(){var left=Math.max(0,LIM-(Date.now()-t0));var tm=$('tm');if(tm)tm.style.width=(left/LIM*100)+'%';if(left<=0){clearInterval(tick);go(null,null);}},80);timers.push(tick);
+    function go(ch,b){if(done)return;done=true;clearInterval(tick);bins.querySelectorAll('.bin').forEach(function(x){x.disabled=true;});
+      var ok=ch===it[1];var fb=$('fb');bins.querySelectorAll('.bin')[['Airborne','Droplet','Contact'].indexOf(it[1])].classList.add('right');
+      if(ok){var fast=(Date.now()-t0)<3000;var r=hit(fast?12:8);fb.className='fb show good';fb.innerHTML='<strong>✓ '+it[1]+' +'+r.pts+'</strong>'+esc(it[2]);}
+      else{if(b)b.classList.add('wrong');lives--;miss({key:'iso2-'+it[0],prompt:'Precautions for '+it[0]+'?',options:[it[1]],answer:0,explain:it[2]});fb.className='fb show bad';fb.innerHTML='<strong>'+(ch?'✗ ':'⏰ Time\u2019s up: ')+it[0]+' = '+it[1]+'</strong>'+esc(it[2]);}
+      setHud(heartTxt());timers.push(setTimeout(function(){i++;show();},ok?900:2000));}
+  }
+  show();
+}
+
+/* =====================================================================
+   GAME 6 — SHOT CLOCK (vaccine schedule)
+   ===================================================================== */
+function shotGame(){
+  newRun();var c=shell('Shot Clock');var deck=shuffle(VISITS),i=0;
+  function show(){
+    if(i>=deck.length)return results('shot','Shot Clock',shotGame);
+    setHud();prog(i,deck.length);var v=deck[i];var sel={};var done=false;
+    c.innerHTML='<div class="visit"><span class="age">'+v.age+'</span><span class="sub">Healthy child, on schedule. Tap every vaccine due at this visit.</span></div><div class="chips" id="chips"></div><button class="primary" id="chk">Check my shots</button><div class="legend hide" id="lg"><span class="l1">Correct</span><span class="l2">Missed (due today)</span><span class="l3">Not due</span><span class="l4">Also acceptable here</span></div><div class="fb" id="fb"></div><button class="next" id="nx">Next visit</button>';
+    var chips=$('chips');VACS.forEach(function(name){var b=el('button','chip',name);b.setAttribute('aria-pressed','false');b.onclick=function(){if(done)return;sel[name]=!sel[name];b.classList.toggle('sel',!!sel[name]);b.setAttribute('aria-pressed',sel[name]?'true':'false');};chips.appendChild(b);});
+    $('chk').onclick=function(){if(done)return;done=true;$('chk').classList.add('hide');$('lg').classList.remove('hide');
+      var bad=0,missed=0;
+      chips.querySelectorAll('.chip').forEach(function(b){var n=b.textContent;var s=!!sel[n];var req=v.req.indexOf(n)!==-1,opt=v.opt.indexOf(n)!==-1;b.className='chip';
+        if(req&&s)b.classList.add('c-ok');else if(req&&!s){b.classList.add('c-miss');missed++;}else if(!req&&s&&opt)b.classList.add('c-opt');else if(!req&&s){b.classList.add('c-bad');bad++;}else if(opt)b.classList.add('c-opt');});
+      var fb=$('fb');var perfect=!bad&&!missed;
+      if(perfect){var r=hit(25);fb.className='fb show good';fb.innerHTML='<strong>✓ Perfect visit! +'+r.pts+(r.m>1?' ×'+r.m:'')+'</strong>'+esc(v.note);}
+      else{var partial=Math.max(0,v.req.length-missed-bad);if(partial>0){run.score+=partial*3;addXP(partial*3);}
+        miss({key:'shot-'+v.age,prompt:'Vaccines due at '+v.age+'?',options:[v.req.join(', ')],answer:0,explain:v.note});
+        fb.className='fb show bad';fb.innerHTML='<strong>✗ Due at '+v.age+': '+esc(v.req.join(', '))+'</strong>'+esc(v.note)+(partial?' (+'+partial*3+' partial points)':'');}
+      updHud();var nx=$('nx');nx.classList.add('show');nx.focus();nx.onclick=function(){i++;show();};};
+  }
+  show();
+}
+
+/* =====================================================================
+   GAME 7 — LIGHTNING ROUND (60 seconds, mixed)
+   ===================================================================== */
+function makeQ(){
+  var r=Math.random();
+  if(r<0.12){var cs=makeVitalsCase();var it=cs.items[Math.floor(Math.random()*cs.items.length)];return {key:'vit-'+cs.g+'-'+it.k,prompt:'A '+cs.age+' has a '+it.k.toLowerCase()+' of '+it.v+'. Normal?',options:['Normal','Report'],answer:it.normal?0:1,explain:it.why};}
+  if(r<0.2){var fd=FEEDS[Math.floor(Math.random()*FEEDS.length)];var fr=FEED_AGES.filter(function(a){return a.v===fd.a[0];})[0];var rl=fr.l+(fr.u?' '+fr.u:'');var fo=shuffle([rl].concat(pick(FEED_AGES.filter(function(a){return fd.a.indexOf(a.v)===-1;}),3).map(function(a){return a.l+(a.u?' '+a.u:'');})));return {key:fd.id,prompt:'Feeding: '+fd.t+'. When?',options:fo,answer:fo.indexOf(rl),explain:fd.why};}
+  r=Math.random();
+  if(r<0.3){var t=TF[Math.floor(Math.random()*TF.length)];return {key:'tf-'+t[0].slice(0,30),prompt:t[0],options:['True','False'],answer:t[1]?0:1,explain:t[2],tf:true};}
+  if(r<0.5){var m=MILESTONES[Math.floor(Math.random()*MILESTONES.length)];var right=ageLabel(m.a[0]);var others=pick(AGES.filter(function(a){return m.a.indexOf(a.v)===-1;}),3).map(function(a){return a.l+' '+a.u;});var o=shuffle([right].concat(others));return {key:m.id,prompt:'When? '+m.t,options:o,answer:o.indexOf(right),explain:m.why};}
+  if(r<0.68){var d=DISEASES[Math.floor(Math.random()*DISEASES.length)];var cl=d.clues[1+Math.floor(Math.random()*3)];var o2=shuffle([d.n].concat(pick(DISEASES.filter(function(x){return x.id!==d.id;}),3).map(function(x){return x.n;})));return {key:'dz-'+d.id,prompt:cl,options:o2,answer:o2.indexOf(d.n),explain:d.pearl};}
+  if(r<0.84){var g=GROUPS[Math.floor(Math.random()*GROUPS.length)];var cl2=CLUES[g][Math.floor(Math.random()*CLUES[g].length)];var o3=GROUPS.slice();return {key:'kid-'+g+'-'+cl2.slice(0,24),prompt:'Which age group? "'+cl2+'"',options:o3,answer:o3.indexOf(g),explain:'That\u2019s a '+g.toLowerCase()+' ('+GROUP_AGES[g]+') fact.'};}
+  var v=VISITS[Math.floor(Math.random()*VISITS.length)];var vac=v.req[Math.floor(Math.random()*v.req.length)];var wrongAges=pick(VISITS.filter(function(x){return x.req.indexOf(vac)===-1&&x.opt.indexOf(vac)===-1;}),3).map(function(x){return x.age;});
+  if(wrongAges.length<3)return makeQ();var o4=shuffle([v.age].concat(wrongAges));return {key:'shot-'+v.age,prompt:'A dose of '+vac+' is due at which visit?',options:o4,answer:o4.indexOf(v.age),explain:v.note};
+}
+function lightningGame(){
+  newRun();var c=shell('Lightning Round');var left=60,endAt=Date.now()+60000;
+  function clock(){return '<span class="pill">⏱ <b id="clk">'+left+'</b>s</span>';}
+  setHud(clock());
+  var t=setInterval(function(){left=Math.max(0,Math.ceil((endAt-Date.now())/1000));var k=$('clk');if(k)k.textContent=left;prog(60-left,60);if(left<=0){clearInterval(t);results('light','Lightning Round',lightningGame);}},250);timers.push(t);
+  function nextQ(){if(left<=0)return;var q=makeQ();mcq(c,q,nextQ,{auto:true,base:10});setHud(clock());}
+  nextQ();
+}
+
+/* =====================================================================
+   REVIEW MY MISSES
+   ===================================================================== */
+function reviewGame(){
+  newRun();var c=shell('Review My Misses');
+  if(!S.misses.length){c.innerHTML='<div class="prompt">No misses saved yet.</div><p class="sub">Anything you miss in any game lands here so you can drill it until it sticks.</p><button class="primary" id="toMenu">Pick a game</button>';$('toMenu').onclick=home;setHud();return;}
+  var pool=S.misses.slice(0,12).map(function(m){
+    var correct=m.options[m.answer];var distract=[];
+    // rebuild choices so the review is a real question
+    if(/^When: /.test(m.prompt)||/^When\? /.test(m.prompt)){distract=pick(AGES.map(function(a){return a.l+' '+a.u;}).filter(function(x){return correct.indexOf(x)===-1;}),3);}
+    else if(/^Feed: /.test(m.prompt)){distract=pick(FEED_AGES.map(function(a){return a.l+(a.u?' '+a.u:'');}).filter(function(x){return correct.indexOf(x)===-1;}),3);}
+    else if(/normal range\?$/.test(m.prompt)){var all=[];VR.forEach(function(r){all.push(r.hr[0]+'–'+r.hr[1]);all.push(r.rr[0]+'–'+r.rr[1]);});all.push('<120/80');distract=pick(all.filter(function(x,ix){return x!==correct&&all.indexOf(x)===ix;}),3);}
+    else if(/^Which disease\?/.test(m.prompt)){distract=pick(DISEASES.map(function(d){return d.n;}).filter(function(x){return x!==correct;}),3);}
+    else if(/^Which age group\?/.test(m.prompt)){distract=GROUPS.filter(function(x){return x!==correct;});}
+    else if(/^Precautions/.test(m.prompt)){distract=['Airborne','Droplet','Contact','Standard only'].filter(function(x){return x!==correct;});}
+    else if(/^Vaccines due/.test(m.prompt)){var others=VISITS.filter(function(v){return v.req.join(', ')!==correct;});distract=pick(others,3).map(function(v){return v.req.join(', ');});}
+    else if(m.options.length>1){return {key:m.key,prompt:m.prompt,options:m.options,answer:m.answer,explain:m.explain};}
+    var o=shuffle([correct].concat(distract));return {key:m.key,prompt:m.prompt.replace(/^When: /,'When does this happen? ').replace(/^Feed: /,'When? ').replace(/\?$/,'?'),options:o,answer:o.indexOf(correct),explain:m.explain};
+  });
+  pool=shuffle(pool);var i=0;
+  function nextQ(){if(i>=pool.length)return results('review','Review',reviewGame);prog(i,pool.length);setHud('<span class="pill">Left <b>'+(pool.length-i)+'</b></span>');var q=pool[i];i++;mcq(c,q,nextQ,{review:true,base:10});}
+  nextQ();
+}
+
+/* =====================================================================
+   HOME
+   ===================================================================== */
+function daysToFriday(){var d=new Date();d.setHours(0,0,0,0);var add=(5-d.getDay()+7)%7;return add;}
+function home(){
+  clearTimers();var app=$('app');var dtf=daysToFriday();
+  var best=function(k){return S.best[k]?'<span class="best">Best: '+S.best[k]+' pts</span>':'<span class="best" style="color:var(--mute);font-weight:600">Not played yet</span>';};
+  app.innerHTML=
+  '<section class="hero"><div><h1>Lock in milestones, microbes &amp; shots.</h1><p>Nine quick games built from your Module 2 and Module 3 study sheet tabs. Every answer shows the fact behind it, and anything you miss is saved so you can drill it again.</p></div>'+
+  '<div class="countdown"><div class="big">'+(dtf===0?'Today':dtf+(dtf===1?' day':' days'))+'</div><div class="lbl">'+(dtf===0?'Exam 1 is today. Quick warm-up round?':'until Exam 1 on Friday')+'</div><div class="row"><span>Level: <b>'+level().name+'</b></span><span><b>'+S.xp+'</b> XP</span></div></div></section>'+
+  '<div class="section-h"><h2>Module 2 · Growth &amp; development</h2><span>Milestones, vitals, nutrition, Erikson, Piaget, play</span></div><div class="games">'+
+  '<button class="game m2" id="g1"><span class="ico">📏</span><h3>Growth Ruler</h3><p>Tap the age on the growth-chart ruler for each milestone. Answer within 6 seconds for a speed bonus.</p>'+best('ruler')+'</button>'+
+  '<button class="game m2" id="g2"><span class="ico">🕵️</span><h3>Who\u2019s This Kid?</h3><p>Clues appear one at a time. Name the age group before you need them all.</p>'+best('kid')+'</button>'+
+  '<button class="game m2" id="g9"><span class="ico">🩺</span><h3>Vitals Check</h3><p>A child\u2019s age and vital signs appear. Mark each one Normal or Report.</p>'+best('vitals')+'</button>'+
+  '<button class="game m2" id="g10"><span class="ico">🍼</span><h3>Feeding Timeline</h3><p>Birth to 2 years: when to start iron, cereal, water, whole milk, honey, juice.</p>'+best('feed')+'</button>'+
+  '<button class="game m2" id="g3"><span class="ico">🃏</span><h3>Flip &amp; Match</h3><p>Memory pairs: Erikson, Piaget, reflexes, heart rates, nutrition numbers, and Module 3 decks.</p><span class="best">9 decks</span></button></div>'+
+  '<div class="section-h"><h2>Module 3 · Communicable diseases &amp; vaccines</h2><span>Hallmarks, isolation, schedule</span></div><div class="games">'+
+  '<button class="game m3" id="g4"><span class="ico">🔍</span><h3>Rash Detective</h3><p>Name the disease from its clues, then pick the isolation precaution for a bonus.</p>'+best('rash')+'</button>'+
+  '<button class="game m3" id="g5"><span class="ico">🧤</span><h3>Isolation Sort</h3><p>Airborne, droplet, or contact? 7 seconds each, 3 lives.</p>'+best('iso')+'</button>'+
+  '<button class="game m3" id="g6"><span class="ico">💉</span><h3>Shot Clock</h3><p>A well visit appears. Tap every vaccine that\u2019s due, from birth to 16 years.</p>'+best('shot')+'</button></div>'+
+  '<div class="section-h"><h2>Both modules</h2></div><div class="games">'+
+  '<button class="game mix" id="g7"><span class="ico">⚡</span><h3>Lightning Round</h3><p>60 seconds of mixed true/false and quick picks from everything above.</p>'+best('light')+'</button></div>'+
+  '<button class="review-tile" id="g8"><span class="n">'+S.misses.length+'</span><span><h3>Review my misses</h3><p>'+(S.misses.length?'Drill the facts you\u2019ve missed. Get one right here and it leaves the deck.':'Empty so far. Misses from every game collect here.')+'</p></span></button>'+
+  '<p class="foot-note">Progress is saved in this browser. <button class="linkbtn" id="reset">Reset my progress</button></p>';
+  $('g1').onclick=function(){rulerGame();};$('g9').onclick=vitalsGame;$('g10').onclick=feedGame;$('g2').onclick=detectiveGame;$('g3').onclick=function(){memoryGame();};$('g4').onclick=rashGame;$('g5').onclick=isoGame;$('g6').onclick=shotGame;$('g7').onclick=lightningGame;$('g8').onclick=reviewGame;
+  $('reset').onclick=function(){if(confirm('Reset all XP, best scores, and saved misses?')){S={xp:0,best:{},bestStreak:0,misses:[]};save();refreshTop();home();}};
+  window.scrollTo(0,0);
+}
+$('homeBtn').onclick=home;
+load();refreshTop();home();
+</script>
+</body>
+</html>
